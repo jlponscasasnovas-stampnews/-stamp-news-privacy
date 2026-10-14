@@ -14,7 +14,7 @@
 <body>
 
 <h1>Privacy Policy — Stamp News</h1>
-<p><strong>Last updated:</strong> October 8, 2026</p>
+<p><strong>Last updated:</strong> October 14, 2026</p>
 
 <p>Stamp News ("the Extension") is a Chrome browser extension that lets users save
 ("stamp") news pages they visit, along with an automatically generated summary,
@@ -50,34 +50,47 @@ using Chrome's <code>storage.local</code> API. This data is never transmitted to
 any server operated by the developer of this Extension. Uninstalling the Extension
 or clearing your browser's extension storage permanently deletes this data.</p>
 
-<h2>4. Optional AI analysis via third-party API</h2>
-<p>The Extension can optionally generate a deeper AI-based analysis (summary,
-sentiment, impact, key actors, prediction ideas) of the page you are viewing.
-This feature only activates if <strong>you enter your own Anthropic API key</strong>
-in the Extension's Settings panel. Your key is stored only on your own device
-(Chrome <code>storage.local</code>), is never sent to the developer, and can be
-removed at any time from the same panel. If, and only if, you have saved a key:</p>
+<h2>4. AI analysis</h2>
+<p>The Extension generates an AI-based analysis (summary, sentiment, impact, key actors,
+prediction ideas) of the page you are viewing. This works in one of two ways:</p>
+
+<h3 style="font-size:15px;margin-top:16px;">a) Free AI analysis through the Stamp News server (default)</h3>
 <ul>
-  <li>The page title, description, and a short excerpt of the page text are sent
-      directly from your browser to Anthropic's API (<code>api.anthropic.com</code>)
-      to generate the analysis.</li>
-  <li>This request is authenticated with the API key you provided and is billed to
-      your own Anthropic account. Anthropic's handling of this data is governed by
-      Anthropic's own privacy policy and terms.</li>
-  <li>The developer of this Extension does not receive, log, or have any access to
-      this data or to your API key.</li>
+  <li>The page title, site name, description and a short excerpt of the page text
+      (at most 2,000 characters) are sent to the Stamp News server
+      (<code>stamp-news-api.stampnews520.workers.dev</code>, hosted on Cloudflare Workers),
+      which forwards them to Anthropic's API (<code>api.anthropic.com</code>) to generate
+      the analysis and returns the result to your browser.</li>
+  <li>To apply the monthly free-analysis limit, the Extension creates a random installation
+      identifier on your device. The server stores only a counter linked to this identifier
+      and the month (deleted automatically after about 40 days), plus a daily total.</li>
+  <li>The Stamp News server does not save the page content, the analysis, your stamps or any account
+      information in its database. The page data is used only to produce the analysis you requested.</li>
+  <li>Anthropic's handling of this data is governed by Anthropic's own privacy policy and terms.
+      As the hosting provider, Cloudflare may keep short-lived technical request logs (such as IP address
+      and time of request) for operating and securing the service.</li>
 </ul>
-<p>If no API key is saved, the Extension performs a basic, fully offline
-keyword-based analysis using only JavaScript running in your browser. In that case,
-no page data ever leaves your device.</p>
+
+<h3 style="font-size:15px;margin-top:16px;">b) Your own Anthropic API key (optional)</h3>
+<p>If you enter your own Anthropic API key in the Extension's Settings panel, the Stamp News
+server is not used. Your key is stored only on your own device (Chrome <code>storage.local</code>),
+is never sent to the developer, and can be removed at any time. The page title, description and
+a short excerpt of the page text are then sent directly from your browser to
+<code>api.anthropic.com</code>, billed to your own Anthropic account.</p>
+
+<p>If the AI analysis is unavailable (for example, the monthly free limit is reached or there is no
+connection), the Extension falls back to a basic, fully offline keyword-based analysis that runs
+only in your browser.</p>
 
 <h2>5. Data sharing</h2>
 <p>The developer of this Extension does not sell, rent, or share any user data with
-third parties. No analytics or tracking scripts are included in the Extension.</p>
+third parties, other than sending page content to Anthropic (through Cloudflare) solely to generate
+the AI analysis described above. No analytics or tracking scripts are included in the Extension.</p>
 
 <h2>6. Permissions used and why</h2>
 <ul>
-  <li><code>storage</code> — to save your stamps, and your optional API key, locally on your device.</li>
+  <li><code>storage</code> — to save your stamps, your optional API key and the random installation identifier locally on your device.</li>
+  <li><code>contextMenus</code> — to add an "Open My stamps" item to the right-click menu of the toolbar icon.</li>
   <li><code>tabs</code> / <code>activeTab</code> — to read the title, URL, and
       content of the tab you are currently viewing when you open the popup.</li>
   <li><code>host_permissions (&lt;all_urls&gt;)</code> — so the Extension's content
