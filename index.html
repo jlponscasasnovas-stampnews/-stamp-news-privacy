@@ -14,7 +14,7 @@
 <body>
 
 <h1>Privacy Policy — Stamp News</h1>
-<p><strong>Last updated:</strong> October 14, 2026</p>
+<p><strong>Last updated:</strong> October 24, 2026</p>
 
 <p>Stamp News ("the Extension") is a Chrome browser extension that lets users save
 ("stamp") news pages they visit, along with an automatically generated summary,
@@ -49,6 +49,11 @@ open the Extension's popup on that page.</p>
 using Chrome's <code>storage.local</code> API. This data is never transmitted to
 any server operated by the developer of this Extension. Uninstalling the Extension
 or clearing your browser's extension storage permanently deletes this data.</p>
+<p>From version 2.3 you can <strong>export your stamps</strong> from "My stamps" as a
+JSON backup or a CSV table. The export file is created entirely in your browser and
+saved on your own device; nothing is uploaded to the developer or to any other server.
+The Extension also remembers, locally on your device, the language and separator you
+choose for CSV exports.</p>
 
 <h2>4. AI analysis</h2>
 <p>The Extension generates an AI-based analysis (summary, sentiment, impact, key actors,
@@ -89,7 +94,7 @@ the AI analysis described above. No analytics or tracking scripts are included i
 
 <h2>6. Permissions used and why</h2>
 <ul>
-  <li><code>storage</code> — to save your stamps, your optional API key and the random installation identifier locally on your device.</li>
+  <li><code>storage</code> — to save your stamps, your optional API key, the random installation identifier and your CSV export preferences (language and separator) locally on your device.</li>
   <li><code>contextMenus</code> — to add an "Open My stamps" item to the right-click menu of the toolbar icon.</li>
   <li><code>tabs</code> / <code>activeTab</code> — to read the title, URL, and
       content of the tab you are currently viewing when you open the popup.</li>
