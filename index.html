@@ -14,7 +14,7 @@
 <body>
 
 <h1>Privacy Policy — Stamp News</h1>
-<p><strong>Last updated:</strong> October 24, 2026</p>
+<p><strong>Last updated:</strong> November 21, 2026</p>
 
 <p>Stamp News ("the Extension") is a Chrome browser extension that lets users save
 ("stamp") news pages they visit, along with an automatically generated summary,
@@ -27,7 +27,9 @@ information from the currently active tab only, and only while the popup is open
 <ul>
   <li>The page title, URL, and hostname</li>
   <li>The page's <code>og:description</code> / meta description, if present</li>
-  <li>A short excerpt of the visible page text (used to generate tags and a summary)</li>
+  <li>A short excerpt of the visible article text (used to generate tags and a summary). From version 2.3.2,
+      menus, subscription offers, cookie notices and hidden or blurred content are left out</li>
+  <li>The page language, as declared by the page or detected from its text</li>
   <li>The page's <code>og:image</code>, if present</li>
   <li>A screenshot of the currently visible tab, taken only if you press "Stamp this page"</li>
 </ul>
@@ -46,7 +48,8 @@ open the Extension's popup on that page.</p>
 
 <h2>3. Where this data is stored</h2>
 <p>All stamps you create are stored <strong>locally on your own device</strong>,
-using Chrome's <code>storage.local</code> API. This data is never transmitted to
+using Chrome's <code>storage.local</code> API. From version 2.3.2 each new stamp also records how much of
+the article text was available for the analysis. This data is never transmitted to
 any server operated by the developer of this Extension. Uninstalling the Extension
 or clearing your browser's extension storage permanently deletes this data.</p>
 <p>From version 2.3 you can <strong>export your stamps</strong> from "My stamps" as a
@@ -61,11 +64,20 @@ prediction ideas) of the page you are viewing. This works in one of two ways:</p
 
 <h3 style="font-size:15px;margin-top:16px;">a) Free AI analysis through the Stamp News server (default)</h3>
 <ul>
-  <li>The page title, site name, description and a short excerpt of the page text
+  <li>The page title, site name, description and a short excerpt of the article text
       (at most 2,000 characters) are sent to the Stamp News server
       (<code>stamp-news-api.stampnews520.workers.dev</code>, hosted on Cloudflare Workers),
       which forwards them to Anthropic's API (<code>api.anthropic.com</code>) to generate
       the analysis and returns the result to your browser.</li>
+  <li>From version 2.3.2, the following technical information about that text is sent as well. These fields describe
+      the article text rather than directly identifying the user, and are used only so that the analysis
+      matches the text actually available:
+      <ul>
+        <li><code>pageLang</code>: the page language (for example <code>es</code>), so that the analysis is written in that language;</li>
+        <li><code>inputLevel</code>: how much of the article was available (the article text, a limited excerpt,
+            or only the headline and teaser);</li>
+        <li><code>truncatedByUs</code>: whether Stamp News shortened the text to the 2,000-character limit.</li>
+      </ul></li>
   <li>To apply the monthly free-analysis limit, the Extension creates a random installation
       identifier on your device. The server stores only a counter linked to this identifier
       and the month (deleted automatically after about 40 days), plus a daily total.</li>
@@ -79,9 +91,11 @@ prediction ideas) of the page you are viewing. This works in one of two ways:</p
 <h3 style="font-size:15px;margin-top:16px;">b) Your own Anthropic API key (optional)</h3>
 <p>If you enter your own Anthropic API key in the Extension's Settings panel, the Stamp News
 server is not used. Your key is stored only on your own device (Chrome <code>storage.local</code>),
-is never sent to the developer, and can be removed at any time. The page title, description and
-a short excerpt of the page text are then sent directly from your browser to
-<code>api.anthropic.com</code>, billed to your own Anthropic account.</p>
+is never sent to the developer, and can be removed at any time. The page title, site name, description and
+a short excerpt of the article text (at most 2,000 characters) are then sent directly from your browser to
+<code>api.anthropic.com</code>, billed to your own Anthropic account. From version 2.3.2 the request also states
+the page language, how much of the article was available and whether Stamp News shortened the text, as
+described in a) above.</p>
 
 <p>If the AI analysis is unavailable (for example, the monthly free limit is reached or there is no
 connection), the Extension falls back to a basic, fully offline keyword-based analysis that runs
